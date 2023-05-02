@@ -1,0 +1,16 @@
+@charset "UTF-8";
+@import 'reset.css';
+#viewpoint {width : 100%; height: 100%;}
+
+
+#header { width: 150px; height: 100%; 
+background-color: yellow; float: left; position: absolute;}
+
+#content {width: calc(100% - 150px ); height: 100%; 
+background-color: gray; position: relative; left: 150px;}
+
+
+.contentli {width: 33.2%; height: 100%; border-right: 2px solid gray; float: left;}
+
+.cookimage {width: 100%; height: 50%; background-color: skyblue;}
+.cookcontent {width: 100%; height: 50%; background-color: pink;}

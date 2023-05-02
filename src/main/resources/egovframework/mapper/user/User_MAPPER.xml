@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="egovframework.user.service.impl.UserMapper">
+	
+
+	<resultMap id="user" type="egovframework.user.service.UserVO">
+		<result property="id" column="id" />
+		<result property="userid" column="userId" />
+		<result property="userpass" column="userPass" />
+		<result property="username" column="userName" />
+		<result property="usercontent" column="userContent" />
+	</resultMap>
+	
+	<insert id="userJoin">
+		<![CDATA[
+			INSERT INTO user 
+				(  userId
+				  , userPass
+				  , userName
+				  , userContent )
+			VALUES ( #{userid}
+				  , #{userpass}
+				  , #{username} 
+				  , #{usercontent} )
+		]]>
+	</insert>
+	
+	<insert id="insertUser">
+		<![CDATA[
+			INSERT INTO user 
+				( userId
+				  , userPass
+				  , userName
+				  , userContent )
+			VALUES ( #{userid}
+				  , #{userpass}
+				  , #{username}
+				  , #{usercontent} )
+		]]>
+	</insert>
+	
+	<select id="checkUserLogin" resultMap="user">
+		<![CDATA[
+			SELECT
+				id
+				, userId
+				, userPass
+				, userName
+				, userContent
+			FROM user WHERE userId=#{userid} and userPass=#{userpass}
+			]]>
+	</select>
+	
+	<update id="updateUser">
+		<![CDATA[
+			UPDATE user
+			SET userId=#{userid}
+				, userPass=#{userpass}
+				, userName=#{username}
+				, userContent=#{usercontent}
+			WHERE id=#{id}
+			]]>
+	</update>
+	
+	<delete id="deleteUser">
+		<![CDATA[
+			DELETE FROM user WHERE id=#{id}
+			]]>
+	</delete>
+	
+	<select id="selectUser" resultMap="user">
+		<![CDATA[
+			SELECT
+				id
+				, userId
+				, userPass
+				, userName
+				, userContent
+			FROM userWHERE id=#{id}
+			]]>
+	</select>
+	
+	<select id="selectUserList" parameterType="egovframework.user.service.UserVO" resultType="egovframework.user.service.UserVO">
+			SELECT
+								id
+								, userId
+								, userPass
+								, userName
+								, userContent
+					FROM user
+			WHERE 1=1
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == 0">AND
+					id = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 1">AND
+					userId LIKE CONCAT('%',#{searchKeyword},'%')
+				</if>
+			</if>
+				ORDER BY id desc
+				limit #{recordCountPerPage} offset #{firstIndex}	
+	</select>	
+	<select id="selectUserListTotCnt" parameterType="egovframework.user.service.UserVO" resultType="int">
+			SELECT COUNT(*) totcnt
+			FROM user
+			WHERE 1=1
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == 0">AND
+					id = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 1">AND
+					userId LIKE CONCAT('%',#{searchKeyword},'%')
+				</if>
+			</if>			
+	</select>
+
+</mapper>
